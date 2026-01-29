@@ -1,0 +1,77 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Database
+ecommerce.db
+*.db
+db_data/
+*.log
+
+# Evidence & Tests (comment out if you want to keep)
+evidence/
+*.json.bak
+
+# Docker
+.dockerignore
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary
+nul
+*.tmp
+*.bak
+docs/VALIDATION_FINALE.md
+docs/TEST_SCENARIOS.md
+docs/TEST_RESULTS.md
+docs/ARCHITECTURE_ADVANCED.md
+docs/ARCHITECTURE.md
+docs/DATABASE_COMPLETE.md
+docs/DATABASE_SCHEMA.md
+docs/EVIDENCE_PACKAGE.md
+docs/EVIDENCE_REPORT.md
+docs/FINAL_STATUS.md
+docs/INSTALL.md
+docs/PRODUCTION_STATUS.md
+docs/QUICK_REFERENCE.md
+docs/QUICKSTART.md
+docs/REORGANIZATION_COMPLETE.md
+docs/SETUP_COMPLETE.md
+docs/DOCKER_FIX.md
+docs/AGENT_CLEANUP.md

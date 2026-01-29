@@ -59,8 +59,8 @@ async function sendMessage(message) {
 
     } catch (error) {
         console.error('Error:', error);
-        addTrace(`ERROR: ${error.message}`);
-        return "Sorry, I encountered an error.";
+        addTrace(`ERREUR: ${error.message}`);
+        return "Désolé, j'ai rencontré une erreur technique.";
     }
 }
 
@@ -85,6 +85,6 @@ chatForm.addEventListener('submit', async (e) => {
 clearButton.addEventListener('click', async () => {
     await fetch(`${API_URL}/clear`, { method: 'POST' });
     chatMessages.innerHTML = '';
-    traceLog.innerHTML = '<div class="trace-entry">History Cleared.</div>';
-    addMessage("Chat history cleared!", "assistant");
+    traceLog.innerHTML = '<div class="trace-entry">Historique effacé.</div>';
+    addMessage("Historique de conversation effacé !", "assistant");
 });

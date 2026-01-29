@@ -1,27 +1,82 @@
-from llm_provider import llm_provider
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
+from agents.sales import SalesAgent
+from agents.support import SupportAgent
 
 class Orchestrator:
+    """Orchestrateur qui route intelligemment vers les agents spécialisés"""
+    
     def __init__(self):
-        self.system_prompt = """
-        You are the Orchestrator of an e-commerce multi-agent system.
-        Your job is to analyze the user's message and decide which specialized agent should handle it.
+        self.llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.1)
         
-        Available Agents:
-        1. 'SALES': For buying products, asking about stock, prices, or recommendations.
-        2. 'SUPPORT': For checking order status, complaints, returns, or technical issues.
-        3. 'CHIT_CHAT': For greetings or general questions not related to the shop.
+        # Créer agents
+        self.sales_agent = SalesAgent()
+        self.support_agent = SupportAgent()
         
-        Output ONLY the agent name (SALES, SUPPORT, or CHIT_CHAT). Do not add any explanation.
-        """
+        # Prompt pour routing
+        self.routing_prompt = ChatPromptTemplate.from_messages([
+            ("system", """Tu es un routeur intelligent qui assigne les demandes aux bons agents.
+
+**AGENTS DISPONIBLES:**
+- SALES: Produits, catalogue, promotions, stock, prix, achats
+- SUPPORT: Commandes, livraisons, factures, SAV, garanties, retours
+- GENERAL: Salutations, questions génériques, blagues, ou hors sujet
+
+**INSTRUCTIONS:**
+Analyse la demande et réponds UNIQUEMENT avec: SALES, SUPPORT, ou GENERAL
+
+Exemples:
+"Je cherche un smartphone" → SALES
+"Où est ma commande?" → SUPPORT
+"Bonjour" → GENERAL
+"Ça va?" → GENERAL
+"Quelles promos?" → SALES
+"J'ai un problème avec mon colis" → SUPPORT
+"Combien coûte l'iPhone?" → SALES"""),
+            ("human", "{input}")
+        ])
         
-    def decide_agent(self, user_message):
-        if not llm_provider:
-            # Fallback mock logic
-            msg = user_message.lower()
-            if any(w in msg for w in ['buy', 'price', 'cost', 'stock', 'iphone', 'macbook']):
-                return 'SALES'
-            if any(w in msg for w in ['order', 'status', 'broken', 'return', 'help']):
-                return 'SUPPORT'
-            return 'CHIT_CHAT'
+        self.router_chain = self.routing_prompt | self.llm
+        self.general_chat = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.7)
+    
+    def route_message(self, user_message: str) -> str:
+        """Détermine l'agent approprié"""
+        try:
+            result = self.router_chain.invoke({"input": user_message})
+            decision = result.content.strip().upper()
             
-        return llm_provider.generate(self.system_prompt, user_message).strip()
+            if "SALES" in decision:
+                return "SALES"
+            elif "SUPPORT" in decision:
+                return "SUPPORT"
+            elif "GENERAL" in decision:
+                return "GENERAL"
+            else:
+                return "GENERAL"  # Fallback plus logique
+        except:
+            return "GENERAL"  # Fallback
+    
+    def process(self, user_message: str, conversation_id: str = "default"):
+        """
+        Traite un message utilisateur avec routage intelligent.
+        """
+        # Routage intelligent
+        assigned_agent = self.route_message(user_message)
+        
+        # Déléguer ou répondre directement
+        if assigned_agent == "SALES":
+            response = self.sales_agent.process(user_message)
+        elif assigned_agent == "SUPPORT":
+            response = self.support_agent.process(user_message)
+        else:
+            # Réponse directe pour GENERAL
+            response = self.general_chat.invoke([
+                ("system", "Tu es un assistant e-commerce serviable. Réponds poliment et brièvement. Si l'utilisateur a besoin d'aide pour des produits ou des commandes, guide-le."),
+                ("human", user_message)
+            ]).content
+        
+        return {
+            'response': response,
+            'agent': assigned_agent,
+            'conversation_id': conversation_id
+        }

@@ -198,45 +198,44 @@
         <!-- Main Chat -->
         <div class="chat-section">
             <header>
-                <h1>Multi-Agent Chatbot</h1>
+                <h1>Chatbot E-Commerce</h1>
                 <div class="controls">
                     <div class="mode-switch">
-                        <label for="agentMode">Mode:</label>
+                        <label for="agentMode">Mode :</label>
                         <select id="agentMode">
-                            <option value="multi">Multi-Agent System</option>
+                            <option value="multi">Système Multi-Agents</option>
                             <option value="mono">Baseline (Mono-Agent)</option>
                         </select>
                     </div>
-                    <button id="clearButton" class="secondary">Clear</button>
+                    <button id="clearButton" class="secondary">Effacer</button>
                 </div>
             </header>
 
             <div id="chatMessages" class="chat-messages">
                 <div class="message assistant">
-                    <div>Hello! I am your AI assistant. I can help you find products (Sales) or check your order status
-                        (Support).</div>
+                    <div>Bonjour ! Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?</div>
                 </div>
             </div>
 
             <div class="input-area">
                 <form id="chatForm">
-                    <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
-                    <button type="submit" id="sendButton">Send</button>
+                    <input type="text" id="messageInput" placeholder="Écrivez votre message..." autocomplete="off">
+                    <button type="submit" id="sendButton">Envoyer</button>
                 </form>
             </div>
         </div>
 
         <!-- Trace Panel -->
         <div class="trace-section">
-            <h3>Agent Trace</h3>
+            <h3>Trace Agent</h3>
             <div id="traceLog" class="trace-log">
                 <!-- Logs will appear here -->
-                <div class="trace-entry">System ready...</div>
+                <div class="trace-entry">Système prêt...</div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="static/js/script.js"></script>
 </body>
 
 </html>

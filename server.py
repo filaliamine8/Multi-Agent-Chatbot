@@ -2,33 +2,30 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
 import os
+import traceback
 
-# Import Agents
+# Import Orchestrator  
 from agents.orchestrator import Orchestrator
-from agents.sales import SalesAgent
-from agents.support import SupportAgent
-from agents.supervisor import SupervisorAgent
-from agents.baseline import BaselineAgent
 
 app = Flask(__name__, static_folder='.')
 CORS(app)
 
-# Initialize Agents
+# Initialize Orchestrator
 try:
     orchestrator = Orchestrator()
-    sales_agent = SalesAgent()
-    support_agent = SupportAgent()
-    supervisor = SupervisorAgent()
-    baseline_agent = BaselineAgent()
-    print("Agents initialized successfully.")
+    print("✅ Orchestrateur Initialisé (Agents avec Outils DB)")
+    print("   → Sales Agent: 5 outils (produits, stock, promos)")
+    print("   → Support Agent: 7 outils (commandes, livraisons, factures)")
 except Exception as e:
-    print(f"Error initializing agents: {e}")
+    print(f"❌ Erreur init: {e}")
+    traceback.print_exc()
 
+# Global message history
 message_history = []
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('templates', 'index.html')
 
 @app.route('/<path:path>')
 def serve_static(path):
@@ -38,7 +35,8 @@ def serve_static(path):
 def chat():
     data = request.get_json()
     user_message = data.get('message', '')
-    mode = data.get('mode', 'multi') # 'multi' or 'mono'
+    mode = data.get('mode', 'multi')  # 'multi' or 'mono'
+    conversation_id = data.get('conversation_id', 'default')
     
     if not user_message:
         return jsonify({'error': 'No message provided'}), 400
@@ -50,62 +48,57 @@ def chat():
     start_time = datetime.now()
     
     try:
+        # Log start
+        trace_log.append(f"[{start_time.strftime('%H:%M:%S')}] New message received")
+        trace_log.append(f"Mode: {'MULTI-AGENT (Advanced)' if mode == 'multi' else 'MONO-AGENT'}")
+        trace_log.append(f"Conversation ID: {conversation_id}")
+        
         if mode == 'mono':
-            trace_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Mode: MONO-AGENT")
-            trace_log.append(f"Calling Baseline Agent...")
-            response_text = baseline_agent.handle_message(user_message)
-            trace_log.append(f"Baseline Agent replied.")
+            # Simple fallback for mono mode
+            trace_log.append("Using fallback mono-agent mode")
+            response_text = "Mono-agent mode...Running in multi-agent mode is recommended for better functionality. Try switching to multi-agent!"
+        else:
+            # Multi-Agent with Tool Calling
+            trace_log.append("=" * 50)
+            trace_log.append("🤖 Orchestrateur Multi-Agents")
             
-        else: # Multi-Agent
-            trace_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Mode: MULTI-AGENT")
+            # Process with routing
+            result = orchestrator.process(user_message, conversation_id)
             
-            # 1. Orchestration
-            trace_log.append("Orchestrator: Analyzing intent...")
-            intent = orchestrator.decide_agent(user_message)
-            trace_log.append(f"Orchestrator: Intent detected -> {intent}")
+            agent_used = result.get('agent', 'N/A')
+            trace_log.append(f"📍 Agent assigné: {agent_used}")
+            trace_log.append(f"🛠️  Outils DB disponibles: {'5 tools' if agent_used == 'SALES' else '7 tools'}")
             
-            # 2. Delegation
-            raw_response = ""
-            if intent == 'SALES':
-                trace_log.append("Delegating to Sales Agent...")
-                raw_response = sales_agent.handle_message(user_message)
-            elif intent == 'SUPPORT':
-                trace_log.append("Delegating to Support Agent...")
-                raw_response = support_agent.handle_message(user_message)
-            else:
-                # Chit Chat fallback
-                trace_log.append("Handling as Chit-Chat...")
-                raw_response = "I am the Orchestrator. I can help specific queries about Sales or Support. For general chat, I am limited."
-                if hasattr(orchestrator, 'handle_message'):
-                     # If orchestrator has a chat capability
-                     pass
-                
-            trace_log.append(f"Agent Raw Response: {raw_response[:50]}...")
+            response_text = result.get('response', 'Erreur traitement')
             
-            # 3. Supervision
-            trace_log.append("Supervisor: Reviewing response for quality...")
-            critique = supervisor.review(user_message, raw_response)
+            trace_log.append("=" * 50)
+            trace_log.append(f"Réponse: {len(response_text)} chars")
             
-            if critique == "APPROVED":
-                response_text = raw_response
-                trace_log.append("Supervisor: Response APPROVED.")
-            else:
-                response_text = critique
-                trace_log.append("Supervisor: Response REVISED.")
-                
     except Exception as e:
         trace_log.append(f"ERROR: {str(e)}")
-        response_text = "Internal Server Error during agent processing."
+        trace_log.append("Stack trace:")
+        trace_log.extend(traceback.format_exc().split('\n'))
+        response_text = f"❌ Internal Error: {str(e)}\n\nPlease try again or rephrase your question."
         print(f"Error in chat processing: {e}")
+        traceback.print_exc()
 
     # Store history
-    message_history.append({'role': 'user', 'content': user_message, 'timestamp': start_time.isoformat()})
-    message_history.append({'role': 'assistant', 'content': response_text, 'timestamp': datetime.now().isoformat()})
+    message_history.append({
+        'role': 'user',
+        'content': user_message,
+        'timestamp': start_time.isoformat()
+    })
+    message_history.append({
+        'role': 'assistant',
+        'content': response_text,
+        'timestamp': datetime.now().isoformat()
+    })
     
     return jsonify({
         'response': response_text,
         'trace': trace_log,
-        'timestamp': datetime.now().isoformat()
+        'timestamp': datetime.now().isoformat(),
+        'conversation_id': conversation_id
     })
 
 @app.route('/api/history', methods=['GET'])
@@ -118,6 +111,34 @@ def clear_history():
     message_history = []
     return jsonify({'status': 'cleared'})
 
+@app.route('/api/health', methods=['GET'])
+def health():
+    """Health check endpoint"""
+    try:
+        import database_mysql as db
+        db_connected = db.test_connection()
+        return jsonify({
+            'status': 'healthy',
+            'database': 'connected' if db_connected else 'disconnected',
+            'orchestrator': 'advanced',
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
 if __name__ == '__main__':
-    print("Starting Multi-Agent Server on http://localhost:5000")
+    print("\n" + "=" * 60)
+    print("🚀 SYSTÈME MULTI-AGENTS E-COMMERCE")
+    print("=" * 60)
+    print("Server: http://localhost:5000")
+    print("Architecture:")
+    print("  🤖 Agents avec outils DB (LangChain)")
+    print("  🧠 Contexte: 10 derniers messages")
+    print("  🔧 12 fonctions database (tools)")
+    print("  💬 Questions intelligentes pour params")
+    print("=" * 60 + "\n")
     app.run(debug=True, port=5000)

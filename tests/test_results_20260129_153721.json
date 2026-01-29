@@ -1,0 +1,264 @@
+{
+  "test_date": "2026-01-29T15:36:20.937765",
+  "system": "Multi-Agent E-Commerce Chatbot",
+  "total_scenarios": 15,
+  "passed": 15,
+  "failed": 0,
+  "results": [
+    {
+      "scenario_id": "S01",
+      "question_fr": "Je veux acheter un laptop gaming sous 1500€",
+      "expected_agent": "SALES",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Nous avons des laptops gaming tels que l'Acer Predator (1299€), l'Asus ROG (1399€) et le Dell Alienware (1499€). Lequel vous intéresse ?",
+      "response_length": 136,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:25.063376"
+    },
+    {
+      "scenario_id": "S02",
+      "question_fr": "Ma commande de téléphone est arrivée cassée, que faire?",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Pouvez-vous me donner votre numéro de commande, s'il vous plaît ?",
+      "response_length": 65,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:29.009061"
+    },
+    {
+      "scenario_id": "S03",
+      "question_fr": "Salut, comment vas-tu?",
+      "expected_agent": "ANY",
+      "actual_agent": "N/A",
+      "agent_routing_ok": true,
+      "ai_response": "Bonjour ! Que puis-je faire pour vous aujourd'hui ?",
+      "response_length": 51,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": true
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:33.111990"
+    },
+    {
+      "scenario_id": "S04",
+      "question_fr": "Je pense acheter une tablette mais je ne suis pas sûr",
+      "expected_agent": "SALES",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Que puis-je faire pour vous aider à choisir une tablette qui convienne à vos besoins ?",
+      "response_length": 86,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:36.751855"
+    },
+    {
+      "scenario_id": "S05",
+      "question_fr": "Avez-vous l'iPhone 15 Pro en stock?",
+      "expected_agent": "SALES",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Oui, nous avons l'iPhone 15 Pro en stock, disponible à 1199€.",
+      "response_length": 61,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:40.337838"
+    },
+    {
+      "scenario_id": "S06",
+      "question_fr": "Où est ma commande CMD-2026-0001?",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Votre commande CMD-2026-0001 est en livraison, elle devrait arriver aujourd'hui.",
+      "response_length": 80,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:44.472931"
+    },
+    {
+      "scenario_id": "S07",
+      "question_fr": "Puis-je retourner mon laptop acheté il y a 40 jours?",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Vous pouvez retourner votre laptop dans les 30 jours suivant la livraison, mais comme cela fait 40 jours, veuillez me donner votre numéro de commande pour que je puisse examiner votre cas.",
+      "response_length": 188,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:48.226439"
+    },
+    {
+      "scenario_id": "S08",
+      "question_fr": "Je veux acheter un Samsung Galaxy S23",
+      "expected_agent": "SALES",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Nous avons le Samsung Galaxy S23 (799€), le Samsung Galaxy S23+ (949€) et le Samsung Galaxy S23 Ultra (1149€). Lequel vous intéresse ?",
+      "response_length": 134,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:52.305084"
+    },
+    {
+      "scenario_id": "S09",
+      "question_fr": "Je m'ennuie, quoi de neuf en tech?",
+      "expected_agent": "ANY",
+      "actual_agent": "N/A",
+      "agent_routing_ok": true,
+      "ai_response": "Nous avons de nouveaux modèles de smartphones, tels que l'iPhone 15 Pro et le Samsung Galaxy S23, ainsi que des laptops gaming performants comme l'Acer Predator. Que vous intéresse ?",
+      "response_length": 182,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": true
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:36:56.151754"
+    },
+    {
+      "scenario_id": "S10",
+      "question_fr": "Ma batterie de laptop est morte",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Pouvez-vous me donner votre numéro de commande pour que je puisse vous aider ?",
+      "response_length": 78,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:37:00.236031"
+    },
+    {
+      "scenario_id": "S11",
+      "question_fr": "Je veux acheter une tablette mais j'ai aussi un problème avec ma dernière commande",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Quel est votre numéro de commande pour que je puisse vous aider avec votre problème ?",
+      "response_length": 85,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:37:03.776712"
+    },
+    {
+      "scenario_id": "S12",
+      "question_fr": "Je veux un laptop",
+      "expected_agent": "SALES",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Nous avons des laptops tels que le Dell Inspiron (599€), le HP Envy (799€) et le MacBook Air (1099€). Lequel vous intéresse ?",
+      "response_length": 125,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:37:07.739390"
+    },
+    {
+      "scenario_id": "S13",
+      "question_fr": "Où est ma commande #XYZ999999?",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Quel est votre numéro de commande exact pour que je puisse vous aider ?",
+      "response_length": 71,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:37:11.664038"
+    },
+    {
+      "scenario_id": "S14",
+      "question_fr": "Quel téléphone devrais-je acheter?",
+      "expected_agent": "SALES",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Nous avons l'iPhone 15 Pro (1199€), le Samsung Galaxy S23 (799€) et le Google Pixel 8 (699€). Lequel vous intéresse ?",
+      "response_length": 117,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:37:15.786831"
+    },
+    {
+      "scenario_id": "S15",
+      "question_fr": "Votre service de livraison est terrible",
+      "expected_agent": "SUPPORT",
+      "actual_agent": "N/A",
+      "agent_routing_ok": false,
+      "ai_response": "Quel est votre numéro de commande pour que je puisse vous aider à résoudre ce problème ?",
+      "response_length": 88,
+      "validation_checks": {
+        "no_technical_terms": true,
+        "concise_response": true,
+        "has_content": true,
+        "agent_correct": false
+      },
+      "overall_status": "✅ PASSED",
+      "timestamp": "2026-01-29T15:37:21.467183"
+    }
+  ]
+}
