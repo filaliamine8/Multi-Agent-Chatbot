@@ -27,7 +27,7 @@ fresh: db-stop clean
 	@docker volume prune -f > nul 2>&1 || true
 	@echo "[INFO] Reinstallation..."
 	@pip install -r requirements.txt > nul 2>&1
-	@docker-compose up -d
+	@docker compose up -d
 	@echo "[INFO] Attente MySQL 15s..."
 	@sleep 15 2> nul || ping 127.0.0.1 -n 16 > nul
 	@docker exec -i chatbot_mariadb mariadb -uroot -e "CREATE DATABASE IF NOT EXISTS ecommerce" 2> nul || true
@@ -36,14 +36,14 @@ fresh: db-stop clean
 
 db-start:
 	@echo "[INFO] Demarrage Docker..."
-	@docker-compose up -d
+	@docker compose up -d
 	@echo "[INFO] Attente 10s..."
 	@sleep 10 2> nul || ping 127.0.0.1 -n 11 > nul
 	@echo "[SUCCESS] Docker demarre"
 
 db-stop:
 	@echo "[INFO] Arret Docker..."
-	@docker-compose down > nul 2>&1 || true
+	@docker compose down > nul 2>&1 || true
 	@echo "[SUCCESS] Docker arrete"
 
 db-init:
